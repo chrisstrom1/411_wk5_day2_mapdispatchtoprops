@@ -1,14 +1,49 @@
-import { connect } from 'react-redux'
-import Dashboard from '../components/Dashboard'
-// import { removeCar } action here
+import React from 'react';
+import { connect } from 'react-redux';
+import { removeCar } from '../redux/actions';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+const Dashboard = ({ cars, removeCar }) => {
+    return (
+        <div>
+            {/* Dashboard content */}
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Car Name</TableCell>
+                            <TableCell align="right">Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {cars.map((car, idx) => (
+                            <TableRow key={idx}>
+                                <TableCell>{car}</TableCell>
+                                <TableCell align="right">
+                                    <IconButton onClick={() => removeCar(idx)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div>
+    );
+};
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user,
         cars: state.cars
-    }
-}
+    };
+};
 
-// add mapDispatchToProps function here
+const mapDispatchToProps = (dispatch) => {
+    return {
+        removeCar: (index) => dispatch(removeCar(index))
+    };
+};
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
